@@ -4,10 +4,10 @@ import utm
 import os
 
 # Load the FWIN Excel data
-df = pd.read_excel("C:\\Users\\jnhernandez\\Documents\\Bio 2\\Data 2025\\Starvation\\SV.GN.2025.FWIN.xlsx")
+df = pd.read_excel("C:\\Users\\Sportfish\\Documents\\Data Wrangling\\RF\\RF.GN.SPP.2025.xlsx")
 
 # Define species codes to generate maps for
-species_list = ["WAE", "SMB", "RBT", "YP", "BNT"]
+species_list = ["WAE", "LMB", "RBT", "YP", "BC", "BLG", "WIP"]
 output_dir = "figures"
 
 # Ensure output folders exist
