@@ -112,7 +112,7 @@ st.markdown("""
 # Sidebar Menu Update
 # ---------------------------
 st.sidebar.markdown("## FWIN 2025")
-species_options = ["Walleye", "Smallmouth Bass", "Rainbow Trout", "Yellow Perch", "Brown Trout"]
+species_options = ["Walleye", "Largemouth Bass", "Rainbow Trout", "Yellow Perch", "Black Crappie", "Wiper", "Bluegill"]
 selected_species = st.sidebar.selectbox("Select a Species", species_options)
 
 st.sidebar.markdown("---")
