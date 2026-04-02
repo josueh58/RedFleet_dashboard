@@ -24,10 +24,10 @@ def placeholder_image(label: str, size=(600, 400)):
     try:
         font = ImageFont.load_default()
         bbox = draw.textbbox((0, 0), text, font=font)
-        w, h = bbox[2] - bbox[0], bbox[3] - bbox[0]
-        draw.text(((size[0]-w)/2, (size[1]-h)/2), text, fill=(200, 200, 200), font=font)
+        w, h = bbox[2] - bbox[0], bbox[3] - bbox[1]
+        draw.text(((size[0] - w) / 2, (size[1] - h) / 2), text, fill=(200, 200, 200), font=font)
     except Exception:
-        draw.text((20, size[1]/2 - 10), text, fill=(200, 200, 200))
+        draw.text((20, size[1] / 2 - 10), text, fill=(200, 200, 200))
 
     buf = io.BytesIO()
     img.save(buf, format='PNG')
@@ -112,8 +112,19 @@ st.markdown("""
 # Sidebar Menu Update
 # ---------------------------
 st.sidebar.markdown("## FWIN 2025")
-species_options = ["Walleye", "Largemouth Bass", "Rainbow Trout", "Yellow Perch", "Black Crappie", "Wiper", "Bluegill"]
-selected_species = st.sidebar.selectbox("Select a Species", species_options)
+
+species_lookup = {
+    "Walleye": "WAE",
+    "Largemouth Bass": "LMB",
+    "Rainbow Trout": "RBT",
+    "Yellow Perch": "YP",
+    "Black Crappie": "BC",
+    "Wiper": "WIP",
+    "Bluegill": "BLG"
+}
+
+selected_species = st.sidebar.selectbox("Select a Species", list(species_lookup.keys()))
+species_code = species_lookup[selected_species]
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("## Forage Netting")
@@ -122,9 +133,8 @@ st.sidebar.info("Coming soon")
 # ---------------------------
 # Species Key and File Paths
 # ---------------------------
-species_key = selected_species.lower().replace(" ", "_")
-fig_dir = f"figures/{species_key}"
-data_table_path = os.path.join("figures", f"{species_key}_metrics.csv")
+fig_dir = os.path.join("figures", species_code)
+data_table_path = os.path.join("figures", f"{species_code}_metrics.csv")
 notes_comments_path = os.path.join(fig_dir, "notes.md")
 
 # ---------------------------
@@ -139,15 +149,18 @@ if os.path.exists(data_table_path):
     df_metrics = pd.read_csv(data_table_path)
     if not df_metrics.empty:
         first_row = df_metrics.iloc[0]
-        st.markdown("<div class='metric-container'>" +
-            f"<div class='metric-box'><h3>Sample Size</h3><p>{first_row['Sample Size']}</p></div>" +
-            f"<div class='metric-box'><h3>Catch Per Unit Effort</h3><p>{first_row['Catch Per Unit Effort']}</p></div>" +
-            f"<div class='metric-box'><h3>Average Total Length</h3><p>{first_row['Average Total Length']} in</p></div>" +
-            f"<div class='metric-box'><h3>Range Total Length</h3><p>{first_row['Range Total Length']} in</p></div>" +
-            f"<div class='metric-box'><h3>Average Weight</h3><p>{first_row['Average Weight']} lb</p></div>" +
-            f"<div class='metric-box'><h3>Range Weight</h3><p>{first_row['Range Weight']} lb</p></div>" +
-            f"<div class='metric-box'><h3>Average Relative Weight</h3><p>{first_row['Average Relative Weight']}</p></div>" +
-            "</div>", unsafe_allow_html=True)
+        st.markdown(
+            "<div class='metric-container'>"
+            + f"<div class='metric-box'><h3>Sample Size</h3><p>{first_row['Sample Size']}</p></div>"
+            + f"<div class='metric-box'><h3>Catch Per Unit Effort</h3><p>{first_row['Catch Per Unit Effort']}</p></div>"
+            + f"<div class='metric-box'><h3>Average Total Length</h3><p>{first_row['Average Total Length']} in</p></div>"
+            + f"<div class='metric-box'><h3>Range Total Length</h3><p>{first_row['Range Total Length']} in</p></div>"
+            + f"<div class='metric-box'><h3>Average Weight</h3><p>{first_row['Average Weight']} lb</p></div>"
+            + f"<div class='metric-box'><h3>Range Weight</h3><p>{first_row['Range Weight']} lb</p></div>"
+            + f"<div class='metric-box'><h3>Average Relative Weight</h3><p>{first_row['Average Relative Weight']}</p></div>"
+            + "</div>",
+            unsafe_allow_html=True,
+        )
 
 # ---------------------------
 # MAP + LENGTH FREQ
@@ -234,8 +247,10 @@ if visible_trends:
 # ---------------------------
 # FOOTER
 # ---------------------------
-st.markdown("""
+st.markdown(
+    """
 ---
 <p style='text-align: center; color: gray;'>Generated as part of Fall 2025 Starvation Reservoir Netting Project</p>
-""", unsafe_allow_html=True)
-
+""",
+    unsafe_allow_html=True,
+)
