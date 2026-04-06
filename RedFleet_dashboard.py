@@ -120,7 +120,9 @@ species_lookup = {
     "Yellow Perch": "YP",
     "Black Crappie": "BC",
     "Wiper": "WIP",
-    "Bluegill": "BLG"
+    "Bluegill": "BLG",
+    "Mountain Whitefish": "MWF"
+
 }
 
 selected_species = st.sidebar.selectbox("Select a Species", list(species_lookup.keys()))
